@@ -1,27 +1,27 @@
-FROM ubuntu:16.04
+FROM ubuntu:22.04
 RUN apt-get update && apt-get -y install cmake \
-	clang-4.0 \
-	tar \
-	wget \
-	sendmail \
-	vim \
-	git \
-	patch \
-	pkg-config \
-	fontconfig \
-	python3 \
-	gcc-4.9 \
-	texinfo \
-	bison \
-	flex \
-	software-properties-common \
-	libfontconfig1-dev
-COPY llvm-4.0.0-project /home/llvm-4.0.0-project
+        clang \
+        build-essential \
+        tar \
+        wget \
+        sendmail \
+        vim \
+        git \
+        patch \
+        pkg-config \
+        fontconfig \
+        python3 \
+        gcc \
+        texinfo \
+        bison \
+        flex \
+        software-properties-common \
+        libfontconfig1-dev
+COPY llvm-12.0.0-project /home/llvm-12.0.0-project
 COPY testcases /home/testcases
 COPY vanilla_llvm /home/vanilla_llvm
-WORKDIR "/home/llvm-4.0.0-project"
+WORKDIR "/home/llvm-12.0.0-project"
 RUN mkdir ASan--Build
-WORKDIR "/home/llvm-4.0.0-project/ASan--Build"
-RUN CC=/usr/bin/clang-4.0 CXX=/usr/bin/clang++-4.0 cmake -DLLVM_ENABLE_PROJECTS="clang;compiler-rt" -G "Unix Makefiles" ../llvm
-RUN make -j4
-
+WORKDIR "/home/llvm-12.0.0-project/ASan--Build"
+RUN CC=/usr/bin/clang CXX=/usr/bin/clang++ cmake -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_PROJECTS="clang;compiler-rt" -G "Unix Makefiles" ../llvm
+RUN make -j
