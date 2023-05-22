@@ -23,10 +23,10 @@ COPY vanilla_llvm /home/vanilla_llvm
 WORKDIR "/home/llvm-12.0.0-project"
 RUN mkdir ASan--Build
 WORKDIR "/home/llvm-12.0.0-project/ASan--Build"
-# According to https://github.com/llvm/llvm-project/issues/55785
-RUN cd .. && wget -c "https://github.com/llvm/llvm-project/commit/82150606fb11d28813ae6da1101f5bda638165fe.diff" &&\
-    git apply 82150606fb11d28813ae6da1101f5bda638165fe.diff &&\
-    wget -c "https://github.com/llvm/llvm-project/commit/b93629dd335ffee2fc4b9b619bf86c3f9e6b0023.diff" &&\
-    git apply b93629dd335ffee2fc4b9b619bf86c3f9e6b0023.diff && cd ASan--Build
+# According to https://github.com/llvm/llvm-project/issues/55785 , need for Ubuntu 2204
+# RUN cd .. && wget -c "https://github.com/llvm/llvm-project/commit/82150606fb11d28813ae6da1101f5bda638165fe.diff" &&\
+#     git apply 82150606fb11d28813ae6da1101f5bda638165fe.diff &&\
+#     wget -c "https://github.com/llvm/llvm-project/commit/b93629dd335ffee2fc4b9b619bf86c3f9e6b0023.diff" &&\
+#     git apply b93629dd335ffee2fc4b9b619bf86c3f9e6b0023.diff && cd ASan--Build
 RUN CC=/usr/bin/clang CXX=/usr/bin/clang++ cmake -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_PROJECTS="clang;compiler-rt" -G "Unix Makefiles" ../llvm
 RUN make -j
